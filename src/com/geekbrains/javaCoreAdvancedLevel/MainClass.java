@@ -1,5 +1,7 @@
 package com.geekbrains.javaCoreAdvancedLevel;
 
+import java.util.concurrent.CyclicBarrier;
+
 public class MainClass {
     public static final int CARS_COUNT = 4;
     public static void main(String[] args) {
