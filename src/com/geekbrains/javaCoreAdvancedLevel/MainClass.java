@@ -2,6 +2,7 @@ package com.geekbrains.javaCoreAdvancedLevel;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 
 public class MainClass {
     public static final int CARS_COUNT = 4;
@@ -24,12 +25,19 @@ public class MainClass {
 
     private static CyclicBarrier cyclicBarrier;
 
+    public static Semaphore getSemaphoreForTunnel() {
+        return semaphoreForTunnel;
+    }
+
+    private static Semaphore semaphoreForTunnel;
+
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
         Race race = new Race(new Road(60), new Tunnel(), new Road(40));
-        countDownLatchFinish = new CountDownLatch(CARS_COUNT);
         Car[] cars = new Car[CARS_COUNT];
+        countDownLatchFinish = new CountDownLatch(CARS_COUNT);
         countDownLatchStart = new CountDownLatch(CARS_COUNT);
+        semaphoreForTunnel = new Semaphore(CARS_COUNT/2);
         cyclicBarrier = new CyclicBarrier(CARS_COUNT);
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
