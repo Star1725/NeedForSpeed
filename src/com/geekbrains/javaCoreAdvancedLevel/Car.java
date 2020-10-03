@@ -1,5 +1,8 @@
 package com.geekbrains.javaCoreAdvancedLevel;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Car implements Runnable {
     private static int CARS_COUNT;
 
@@ -9,6 +12,9 @@ public class Car implements Runnable {
     private Race race;
     private int speed;
     private String name;
+
+    private static boolean flagWinner;
+
     public String getName() {
         return name;
     }
@@ -34,8 +40,15 @@ public class Car implements Runnable {
             e.printStackTrace();
         }
         for (int i = 0; i < race.getStages().size(); i++) {
-            race.getStages().get(i).go(this);
+            race.getStages().get(i).go(this, race.getStages().size() - 1 - i);
         }
         MainClass.getCountDownLatchFinish().countDown();
+    }
+
+    public void checkWinner(){
+        if (!flagWinner) {
+            flagWinner = true;
+            System.out.println(String.format("%s - WIN", this.name));
+        }
     }
 }

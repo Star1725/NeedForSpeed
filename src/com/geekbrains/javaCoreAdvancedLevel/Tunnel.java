@@ -6,7 +6,7 @@ public class Tunnel extends Stage {
         this.description = "Тоннель " + length + " метров";
     }
     @Override
-    public void go(Car c) {
+    public void go(Car c, int countStage) {
         try {
             try {
                 System.out.println(c.getName() + " готовится к этапу(ждет): " + description);
@@ -16,7 +16,14 @@ public class Tunnel extends Stage {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
+
+                MainClass.getLockForCheckWIN().lock();
                 System.out.println(c.getName() + " закончил этап: " + description);
+                if (countStage == 0){
+                    c.checkWinner();
+                }
+                MainClass.getLockForCheckWIN().unlock();
+
                 MainClass.getSemaphoreForTunnel().release();
             }
         } catch (Exception e) {
